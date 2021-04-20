@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<title>Query Result</title>
+
+<table>
+    <tr>
+        <th>No</th>
+        <th>time_ref</th>
+        <th>Trade value</th>
+    </tr>
+    {% for result in results %}
+    <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ result[0] }}</td>
+        <td>{{ result[1] }}</td>
+    </tr>
+    {% endfor %}
+</table>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<title>Query Result</title>
+
+<table>
+    <tr>
+        <th>no</th>
+        <th>country_label</th>
+        <th>product_type</th>
+        <th>product_type</th>
+        <th>status</th>
+    </tr>
+    {% for result in results %}
+    <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ result[0] }}</td>
+        <td>{{ result[1] }}</td>
+        <td>{{ result[2] }}</td>
+        <td>{{ result[3] }}</td>
+    </tr>
+    {% endfor %}
+</table>
