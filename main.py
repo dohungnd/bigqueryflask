@@ -33,7 +33,7 @@ def result1():
     query_job = bigquery_client.query(
         """
         SELECT time_ref,sum(case when account in ('Exports','Imports') then value end) trade_value 
-        FROM `flaskforum-311009.a1_2.gsquarterlySeptember20` 
+        FROM `bigqueryflask.a1_2.gsquarterlySeptember20` 
         group by time_ref order by sum(case when account in ('Exports','Imports') then value end) desc
         LIMIT 10
     """
@@ -58,13 +58,13 @@ def result2():
         SELECT country_code,product_type,status,sum(case when account = 'Imports' then value
             when account = 'Exports' then -value
             end) trade_deficit_value
-        FROM `flaskforum-311009.a1_2.gsquarterlySeptember20` 
+        FROM `bigqueryflask.a1_2.gsquarterlySeptember20` 
         where time_ref between '201401' and '201612'
         and product_type='Goods'
         and status='F'
         group by country_code,product_type,status 
         ) a
-        inner join `flaskforum-311009.a1_2.country_classification` b
+        inner join `bigqueryflask.a1_2.country_classification` b
         on a.country_code=b.country_code
         order by a.trade_deficit_value desc
         limit 50
@@ -86,19 +86,19 @@ def result3():
         """
         select b.service_label,
             sum( case when a.account = 'Imports' then - a.value when a.account = 'Exports' then a.value end) trade_surplus_value
-        from `flaskforum-311009.a1_2.gsquarterlySeptember20` a
-        inner join `flaskforum-311009.a1_2.services_classification` b on a.code=b.code
+        from `bigqueryflask.a1_2.gsquarterlySeptember20` a
+        inner join `bigqueryflask.a1_2.services_classification` b on a.code=b.code
         where a.time_ref in 
         (
             SELECT time_ref
-            FROM `flaskforum-311009.a1_2.gsquarterlySeptember20` 
+            FROM `bigqueryflask.a1_2.gsquarterlySeptember20` 
             group by time_ref order by sum(case when account in ('Exports','Imports') then value end) desc
             LIMIT 10
         )
         and a.country_code in
         (
             SELECT country_code
-            FROM `flaskforum-311009.a1_2.gsquarterlySeptember20` 
+            FROM `bigqueryflask.a1_2.gsquarterlySeptember20` 
             where time_ref between '201401' and '201612'
             and product_type='Goods'
             and status='F'
@@ -122,6 +122,6 @@ if __name__ == "__main__":
     # This is used when running locally only. When deploying to Google App
     # Engine, a webserver process such as Gunicorn will serve the app. This
     # can be configured by adding an `entrypoint` to app.yaml.
-    app.run(host="0.0.0.0", port=8080, debug=True)
+    app.run(host="127.0.0.1", port=8080, debug=True)
 # [END gae_python3_bigquery]
 # [END gae_python38_bigquery]
